@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { ImageBackground, StyleSheet } from 'react-native';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { LinearGradient } from 'expo-linear-gradient';
 
 import StartGameScreen from './screens/StartGameScreen.js';
 import GameScreen from './screens/GameScreen.js';
-import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import Colors from './constants/colors.js';
 
 export default function App() {
@@ -26,7 +26,7 @@ export default function App() {
 					style={styles.rootContainer}
 					imageStyle={styles.backgroundImage}
 				>
-					{userNumber && <GameScreen />}
+					{userNumber && <GameScreen userNumber={userNumber} />}
 					{!userNumber && <StartGameScreen onPickNumber={pickedNumberHandler} />}
 				</ImageBackground>
 			</LinearGradient>
