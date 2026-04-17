@@ -4,6 +4,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 
 import StartGameScreen from './screens/StartGameScreen.js';
 import GameScreen from './screens/GameScreen.js';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import Colors from './constants/colors.js';
 
 export default function App() {
 	const [userNumber, setUserNumber] = useState(null);
@@ -13,20 +15,22 @@ export default function App() {
 	}
 
 	return (
-		<LinearGradient
-			style={styles.rootContainer}
-			colors={['#4e0329', '#ddb52f']}
-		>
-			<ImageBackground
-				source={require('./assets/images/background.png')}
-				resizeMode='cover'
+		<SafeAreaProvider>
+			<LinearGradient
 				style={styles.rootContainer}
-				imageStyle={styles.backgroundImage}
+				colors={[Colors.primary700, Colors.accent500]}
 			>
-				{userNumber && <GameScreen />}
-				{!userNumber && <StartGameScreen onPickNumber={pickedNumberHandler}/>}
-			</ImageBackground>
-		</LinearGradient>
+				<ImageBackground
+					source={require('./assets/images/background.png')}
+					resizeMode='cover'
+					style={styles.rootContainer}
+					imageStyle={styles.backgroundImage}
+				>
+					{userNumber && <GameScreen />}
+					{!userNumber && <StartGameScreen onPickNumber={pickedNumberHandler} />}
+				</ImageBackground>
+			</LinearGradient>
+		</SafeAreaProvider>
 	);
 }
 
