@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Alert, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -19,9 +19,15 @@ const generateRandomBetween = (min, max, exclude) => {
 let minBoundary = 1;
 let maxBoundary = 100;
 
-export default function GameScreen({ userNumber }) {
+export default function GameScreen({ userNumber, onGameOver }) {
     const initialGuess = generateRandomBetween(minBoundary, maxBoundary, userNumber)
     const [currentGuess, setCurrentGuess] = useState(initialGuess);
+
+    useEffect(() => {
+        if (userNumber === currentGuess) {
+            onGameOver();
+        }
+    }, [userNumber, currentGuess]);
 
     const nextGuessHandler = (direction) => {
         if (
