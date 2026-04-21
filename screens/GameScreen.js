@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 import { Alert, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import Title from "../components/Title";
+import Title from "../components/ui/Title";
 import NumberContainer from "../components/game/NumberContainer";
-import PrimaryButton from "../components/PrimaryButton";
+import PrimaryButton from "../components/ui/PrimaryButton";
 
 const generateRandomBetween = (min, max, exclude) => {
     const rndNum = Math.floor(Math.random() * (max - min)) + min;
