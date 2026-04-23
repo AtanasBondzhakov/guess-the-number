@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Alert, StyleSheet, View, Text } from "react-native";
+import { Alert, StyleSheet, View, FlatList } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -8,6 +8,7 @@ import NumberContainer from "../components/game/NumberContainer";
 import PrimaryButton from "../components/ui/PrimaryButton";
 import Card from "../components/ui/Card.js";
 import InstructionText from "../components/ui/InstructionText.js";
+import GuessLogItem from "../components/game/GuessLogItem.js";
 
 const generateRandomBetween = (min, max, exclude) => {
     const rndNum = Math.floor(Math.random() * (max - min)) + min;
@@ -60,6 +61,8 @@ export default function GameScreen({ userNumber, onGameOver }) {
         setRoundGuess(prevRoundGuess => [newRndNum, ...prevRoundGuess]);
     }
 
+    const guessRoundListLength = roundGuess.length;
+
     return (
         <SafeAreaView style={styles.screen}>
             <View>
@@ -81,7 +84,11 @@ export default function GameScreen({ userNumber, onGameOver }) {
                     </View>
                 </Card>
                 <View>
-                    {roundGuess.map(round => <Text key={round}>{round}</Text>)}
+                    <FlatList
+                        data={roundGuess}
+                        renderItem={({ item, index }) => <GuessLogItem roundNumber={guessRoundListLength - index} guess={item} />}
+                        keyExtractor={item => item}
+                    />
                 </View>
             </View>
         </SafeAreaView>
