@@ -65,31 +65,29 @@ export default function GameScreen({ userNumber, onGameOver }) {
 
     return (
         <SafeAreaView style={styles.screen}>
-            <View>
-                <Title>Opponent's Guess</Title>
-                <NumberContainer>{currentGuess}</NumberContainer>
-                <Card>
-                    <InstructionText>Greater or lower?</InstructionText>
-                    <View style={styles.buttonsContainer}>
-                        <View style={styles.buttonContainer}>
-                            <PrimaryButton onPress={nextGuessHandler.bind(this, 'lower')}>
-                                <Ionicons name="remove" size={24} color="#fff" />
-                            </PrimaryButton>
-                        </View>
-                        <View style={styles.buttonContainer}>
-                            <PrimaryButton onPress={nextGuessHandler.bind(this, 'greater')}>
-                                <Ionicons name="add" size={24} color="#fff" />
-                            </PrimaryButton>
-                        </View>
+            <Title>Opponent's Guess</Title>
+            <NumberContainer>{currentGuess}</NumberContainer>
+            <Card>
+                <InstructionText>Greater or lower?</InstructionText>
+                <View style={styles.buttonsContainer}>
+                    <View style={styles.buttonContainer}>
+                        <PrimaryButton onPress={nextGuessHandler.bind(this, 'lower')}>
+                            <Ionicons name="remove" size={24} color="#fff" />
+                        </PrimaryButton>
                     </View>
-                </Card>
-                <View>
-                    <FlatList
-                        data={roundGuess}
-                        renderItem={({ item, index }) => <GuessLogItem roundNumber={guessRoundListLength - index} guess={item} />}
-                        keyExtractor={item => item}
-                    />
+                    <View style={styles.buttonContainer}>
+                        <PrimaryButton onPress={nextGuessHandler.bind(this, 'greater')}>
+                            <Ionicons name="add" size={24} color="#fff" />
+                        </PrimaryButton>
+                    </View>
                 </View>
+            </Card>
+            <View style={styles.listContainer}>
+                <FlatList
+                    data={roundGuess}
+                    renderItem={({ item, index }) => <GuessLogItem roundNumber={guessRoundListLength - index} guess={item} />}
+                    keyExtractor={item => item}
+                />
             </View>
         </SafeAreaView>
     );
@@ -98,7 +96,7 @@ export default function GameScreen({ userNumber, onGameOver }) {
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
-        padding: 32
+        padding: 24
     },
     buttonsContainer: {
         flexDirection: 'row',
@@ -107,5 +105,9 @@ const styles = StyleSheet.create({
     },
     buttonContainer: {
         flex: 1
+    },
+    listContainer: {
+        flex: 1,
+        padding: 16
     }
 });
