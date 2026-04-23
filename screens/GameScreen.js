@@ -11,7 +11,10 @@ import InstructionText from "../components/ui/InstructionText.js";
 import GuessLogItem from "../components/game/GuessLogItem.js";
 
 const generateRandomBetween = (min, max, exclude) => {
-    const rndNum = Math.floor(Math.random() * (max - min)) + min;
+    if (min === max) {
+        return min;
+    }
+    const rndNum = Math.floor(Math.random() * (max - min + 1)) + min;
 
     if (rndNum === exclude) {
         return generateRandomBetween(min, max, exclude);
@@ -51,9 +54,9 @@ export default function GameScreen({ userNumber, onGameOver }) {
         }
 
         if (direction === 'lower') {
-            maxBoundary = currentGuess;
+            maxBoundary = currentGuess - 1;
         } else {
-            minBoundary = currentGuess;
+            minBoundary = currentGuess + 1;
         }
 
         const newRndNum = generateRandomBetween(minBoundary, maxBoundary, currentGuess);
