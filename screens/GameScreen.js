@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Alert, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { Ionicons } from "@expo/vector-icons";
 
 import Title from "../components/ui/Title";
 import NumberContainer from "../components/game/NumberContainer";
@@ -59,9 +60,17 @@ export default function GameScreen({ userNumber, onGameOver }) {
                 <NumberContainer>{currentGuess}</NumberContainer>
                 <Card>
                     <InstructionText>Greater or lower?</InstructionText>
-                    <View>
-                        <PrimaryButton onPress={nextGuessHandler.bind(this, 'lower')}>-</PrimaryButton>
-                        <PrimaryButton onPress={nextGuessHandler.bind(this, 'greater')}>+</PrimaryButton>
+                    <View style={styles.buttonsContainer}>
+                        <View style={styles.buttonContainer}>
+                            <PrimaryButton onPress={nextGuessHandler.bind(this, 'lower')}>
+                                <Ionicons name="remove" size={24} color="#fff" />
+                            </PrimaryButton>
+                        </View>
+                        <View style={styles.buttonContainer}>
+                            <PrimaryButton onPress={nextGuessHandler.bind(this, 'greater')}>
+                                <Ionicons name="add" size={24} color="#fff" />
+                            </PrimaryButton>
+                        </View>
                     </View>
                 </Card>
             </View>
@@ -73,5 +82,13 @@ const styles = StyleSheet.create({
     screen: {
         flex: 1,
         padding: 32
+    },
+    buttonsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'center',
+        marginTop: 16
+    },
+    buttonContainer: {
+        flex: 1
     }
 });
