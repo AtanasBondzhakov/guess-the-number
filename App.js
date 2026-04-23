@@ -12,6 +12,7 @@ import Colors from './constants/colors.js';
 export default function App() {
   const [userNumber, setUserNumber] = useState(null);
   const [gameIsOver, setGameIsOver] = useState(false);
+  const [roundsGuess, setRoundsGuess] = useState(0);
 
   useFonts({
     'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
@@ -24,6 +25,12 @@ export default function App() {
 
   const gameOverHandler = () => {
     setGameIsOver(true);
+  }
+
+  const newGameHandler = () => {
+    setUserNumber(null);
+    setGameIsOver(false);
+    setRoundsGuess(0);
   }
 
   return (
@@ -45,7 +52,13 @@ export default function App() {
             />
           }
           {!userNumber && <StartGameScreen onPickNumber={pickedNumberHandler} />}
-          {(userNumber && gameIsOver) && <GameOverScreen />}
+          {(userNumber && gameIsOver) && (
+            <GameOverScreen
+              roundsNumbers={roundsGuess}
+              userNumber={userNumber}
+              onNewGame={newGameHandler}
+            />
+          )}
         </ImageBackground>
       </LinearGradient>
     </SafeAreaProvider>

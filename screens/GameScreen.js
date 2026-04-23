@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Alert, StyleSheet, View } from "react-native";
+import { Alert, StyleSheet, View, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -25,12 +25,18 @@ let maxBoundary = 100;
 export default function GameScreen({ userNumber, onGameOver }) {
     const initialGuess = generateRandomBetween(minBoundary, maxBoundary, userNumber)
     const [currentGuess, setCurrentGuess] = useState(initialGuess);
+    const [roundGuess, setRoundGuess] = useState([initialGuess]);
 
     useEffect(() => {
         if (userNumber === currentGuess) {
             onGameOver();
         }
     }, [userNumber, currentGuess]);
+
+    useEffect(() => {
+        minBoundary = 1;
+        maxBoundary = 100;
+    }, []);
 
     const nextGuessHandler = (direction) => {
         if (
@@ -51,6 +57,7 @@ export default function GameScreen({ userNumber, onGameOver }) {
 
         const newRndNum = generateRandomBetween(minBoundary, maxBoundary, currentGuess);
         setCurrentGuess(newRndNum);
+        setRoundGuess(prevRoundGuess => [newRndNum, ...prevRoundGuess]);
     }
 
     return (
@@ -73,6 +80,9 @@ export default function GameScreen({ userNumber, onGameOver }) {
                         </View>
                     </View>
                 </Card>
+                <View>
+                    {roundGuess.map(round => <Text key={round}>{round}</Text>)}
+                </View>
             </View>
         </SafeAreaView>
     );
