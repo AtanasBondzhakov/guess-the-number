@@ -10,12 +10,14 @@ export default function Title({ children }) {
 
 const styles = StyleSheet.create({
     title: {
-        fontSize: 32,
+        fontSize: 24,
         fontFamily: 'open-sans-bold',
         color: Colors.accent500,
         textAlign: 'center',
         borderWidth: 2,
         borderColor: Colors.accent500,
-        padding: 12
+        padding: 12,
+        maxWidth: '80%',
+        width: 300
     }
 });

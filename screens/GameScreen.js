@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Alert, StyleSheet, View, FlatList } from "react-native";
+import { Alert, StyleSheet, View, FlatList, useWindowDimensions } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -30,6 +30,7 @@ export default function GameScreen({ userNumber, onGameOver }) {
     const initialGuess = generateRandomBetween(minBoundary, maxBoundary, userNumber)
     const [currentGuess, setCurrentGuess] = useState(initialGuess);
     const [roundGuess, setRoundGuess] = useState([initialGuess]);
+    const { width } = useWindowDimensions();
 
     useEffect(() => {
         if (userNumber === currentGuess) {
@@ -66,32 +67,63 @@ export default function GameScreen({ userNumber, onGameOver }) {
 
     const guessRoundListLength = roundGuess.length;
 
-    return (
-        <SafeAreaView style={styles.screen}>
-            <Title>Opponent's Guess</Title>
-            <NumberContainer>{currentGuess}</NumberContainer>
-            <Card>
-                <InstructionText>Greater or lower?</InstructionText>
-                <View style={styles.buttonsContainer}>
-                    <View style={styles.buttonContainer}>
+    let content = <>
+        <NumberContainer>{currentGuess}</NumberContainer>
+        <Card>
+            <InstructionText>Greater or lower?</InstructionText>
+            <View style={styles.buttonsContainer}>
+                <View style={styles.buttonContainer}>
+                    <PrimaryButton onPress={nextGuessHandler.bind(this, 'lower')}>
+                        <Ionicons name="remove" size={24} color="#fff" />
+                    </PrimaryButton>
+                </View>
+                <View style={styles.buttonContainer}>
+                    <PrimaryButton onPress={nextGuessHandler.bind(this, 'greater')}>
+                        <Ionicons name="add" size={24} color="#fff" />
+                    </PrimaryButton>
+                </View>
+            </View>
+        </Card>
+        <View style={styles.listContainer}>
+            <FlatList
+                data={roundGuess}
+                renderItem={({ item, index }) => <GuessLogItem roundNumber={guessRoundListLength - index} guess={item} />}
+                keyExtractor={item => item}
+            />
+        </View>
+    </>
+
+    if (width > 500) {
+        content = (
+            <View style={styles.containerWide}>
+                <View style={styles.buttonsContainerWide}>
+                    <View style={styles.buttonContainerWide}>
                         <PrimaryButton onPress={nextGuessHandler.bind(this, 'lower')}>
                             <Ionicons name="remove" size={24} color="#fff" />
                         </PrimaryButton>
                     </View>
-                    <View style={styles.buttonContainer}>
+                    <NumberContainer>{currentGuess}</NumberContainer>
+                    <View style={styles.buttonContainerWide}>
                         <PrimaryButton onPress={nextGuessHandler.bind(this, 'greater')}>
                             <Ionicons name="add" size={24} color="#fff" />
                         </PrimaryButton>
                     </View>
                 </View>
-            </Card>
-            <View style={styles.listContainer}>
-                <FlatList
-                    data={roundGuess}
-                    renderItem={({ item, index }) => <GuessLogItem roundNumber={guessRoundListLength - index} guess={item} />}
-                    keyExtractor={item => item}
-                />
+                <View style={styles.listContainerWide}>
+                    <FlatList
+                        data={roundGuess}
+                        renderItem={({ item, index }) => <GuessLogItem roundNumber={guessRoundListLength - index} guess={item} />}
+                        keyExtractor={item => item}
+                    />
+                </View>
             </View>
+        )
+    }
+
+    return (
+        <SafeAreaView style={styles.screen}>
+            <Title>Opponent's Guess</Title>
+            {content}
         </SafeAreaView>
     );
 };
@@ -99,7 +131,14 @@ export default function GameScreen({ userNumber, onGameOver }) {
 const styles = StyleSheet.create({
     screen: {
         flex: 1,
-        padding: 24
+        padding: 24,
+        alignItems: 'center'
+    },
+    containerWide: {
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        gap: 36
     },
     buttonsContainer: {
         flexDirection: 'row',
@@ -107,10 +146,21 @@ const styles = StyleSheet.create({
         marginTop: 16
     },
     buttonContainer: {
+        flex: 1,
+    },
+    buttonsContainerWide: {
+        flexDirection: 'row',
+        alignItems: 'center',
         flex: 1
     },
     listContainer: {
         flex: 1,
         padding: 16
+    },
+    listContainerWide: {
+        flex: 1,
+    },
+    buttonContainerWide: {
+        flex: 1
     }
 });
